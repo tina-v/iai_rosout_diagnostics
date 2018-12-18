@@ -1,0 +1,25 @@
+<launch>
+
+<node name="speaking_numbers_node1" pkg="monitor_nodes" type="dummyDrive.py" output="screen" >
+  <param name="speech_rate" type="int" value="1" />
+
+</node>
+
+<node name="speaking_numbers_node2" pkg="monitor_nodes" type="dummyDrive.py" output="screen">
+  <param name="speech_rate" type="int" value="2" />
+</node>
+
+<node name="receiving_numbers_node1" pkg="monitor_nodes" type="getStatistics.py" output="screen">
+  <remap from ="~speaking_numbers" to ="/speaking_numbers_node1/speaking_numbers" />
+</node>
+
+<node name="receiving_numbers_node2" pkg="monitor_nodes" type="getStatistics.py" output="screen">
+  <remap from ="~speaking_numbers" to ="/speaking_numbers_node2/speaking_numbers" />
+</node>
+
+<node name="supervisor_node1" pkg="monitor_nodes" type="supervisor.py" output="screen">
+  <remap from ="~speaking_numbers" to ="/speaking_numbers_node1/speaking_numbers" />
+</node>
+
+</launch>
+
