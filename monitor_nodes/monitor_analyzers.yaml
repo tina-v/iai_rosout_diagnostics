@@ -1,0 +1,11 @@
+pub_rate: 1.0 # Optional
+base_path: '' # Optional, prepended to all diagnostic output
+analyzers:
+  nodename:
+    type: GenericAnalyzer
+    path: name
+    startswith: 'name'
+  level:
+    type: GenericAnalyzer
+    path: level
+    startswith: 'level'

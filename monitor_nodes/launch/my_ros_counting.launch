@@ -1,8 +1,11 @@
 <launch>
 
+<node pkg="diagnostic_aggregator" type="aggregator_node" name="diagnostic_aggregator" >
+<rosparam command="load" file="$(find monitor_nodes)/monitor_analyzers.yaml" />
+</node>
+
 <node name="speaking_numbers_node1" pkg="monitor_nodes" type="dummyDrive.py" output="screen" >
   <param name="speech_rate" type="int" value="1" />
-
 </node>
 
 <node name="speaking_numbers_node2" pkg="monitor_nodes" type="dummyDrive.py" output="screen">
@@ -18,7 +21,6 @@
 </node>
 
 <node name="supervisor_node1" pkg="monitor_nodes" type="supervisor.py" output="screen">
-  <remap from ="~speaking_numbers" to ="/speaking_numbers_node1/speaking_numbers" />
 </node>
 
 </launch>
