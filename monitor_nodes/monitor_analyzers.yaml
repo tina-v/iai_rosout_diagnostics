@@ -9,3 +9,35 @@ analyzers:
     type: GenericAnalyzer
     path: level
     startswith: 'level'
+  status:
+    type: GenericAnalyzer
+    path: status
+    contains: ['name']
+
+#    analyzers:
+#      nodename:
+#        type: GenericAnalyzer
+#        path: name
+#
+
+#supervisor print out test:
+#
+#header: <__main__.SupervisorNode object at 0x7fb7611d21d0>
+#status: - name:/speaking_numbers_node1
+#- level:8
+#- !!python/object/new:rosgraph_msgs.msg._Log.Log
+#  state:
+#  - !!python/object/new:std_msgs.msg._Header.Header
+#    state:
+#    - 248
+#    - !!python/object/new:genpy.rostime.Time
+#      state: [1546447415, 349478960]
+#    - ''
+#  - 8
+#  - /speaking_numbers_node1
+#  - test_errorcount:21
+#  - dummyDrive.py
+#  - speaking
+#  - 41
+#  - [/speaking_numbers_node1/speaking_numbers, /rosout]
+

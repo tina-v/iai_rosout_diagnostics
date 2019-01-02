@@ -9,6 +9,7 @@ from rosgraph_msgs.msg import Log
 from rospy.service import logger
 from drive_msgs.srv import GetLogger
 from diagnostic_msgs.msg import DiagnosticArray
+from diagnostic_msgs.msg import DiagnosticStatus
 
 class SupervisorNode(object):
     def __init__(self):
@@ -44,9 +45,9 @@ class SupervisorNode(object):
         :rtype: None
         """
 
-        msgsInfo = [msg.name, msg.level]
-
-        self.pub.publish(self, msgsInfo)
+        msgsInfo = ["/name"+ msg.name, "/level:"+ str(msg.level), msg]
+        print(DiagnosticArray(self, msgsInfo))
+        self.pub.publish(DiagnosticArray(self, msgsInfo))
 
         #TODO die abfrage ist das problem-
        # if not self.loglist:
