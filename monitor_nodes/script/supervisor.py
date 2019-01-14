@@ -45,9 +45,29 @@ class SupervisorNode(object):
         :rtype: None
         """
 
-        msgsInfo = ["/name"+ msg.name, "/level:"+ str(msg.level), msg]
-        print(DiagnosticArray(self, msgsInfo))
-        self.pub.publish(DiagnosticArray(self, msgsInfo))
+        #mapping rosgraph.msg to DiganosticStatus.msg
+        level = bytes
+        name = 'supervisor_node'
+        message = msg.msg
+        hardware_id = msg.name
+        values = [msg.file, msg.function]
+
+        if msg.level <= 3:
+            level = 0
+        elif msg.level == 4:
+            level = 1
+        elif msg.level == 8:
+            level = 2
+        elif msg.level == 16:
+            level = 3
+
+        print(type(msg.level), type(level))
+        msginfo = [level, name, message, hardware_id, values]
+
+        #print(DiagnosticStatus(level, name, message, hardware_id, values))
+        # self.pub.publish(DiagnosticStatus(level, name, message, hardware_id, values))
+
+        self.pub.publish(DiagnosticArray(msg.header, msginfo))
 
         #TODO die abfrage ist das problem-
        # if not self.loglist:
