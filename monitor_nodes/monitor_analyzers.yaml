@@ -3,7 +3,7 @@ base_path: '' # Optional, prepended to all diagnostic output
 analyzers:
   nodename:
     type: GenericAnalyzer
-    path: name
+    path: ' '
     startswith: 'name'
   level:
     type: GenericAnalyzer
@@ -15,18 +15,20 @@ analyzers:
 #        type: GenericAnalyzer
 #        path: name
 
-#header: "/speaking_numbers_node2"
+#header:
+#  seq: 360
+#  stamp:
+#    secs: 1547717791
+#    nsecs: 739353895
+#  frame_id: ''
 #status:
-#  header:
-#    seq: 1232
-#    stamp:
-#      secs: 1547458922
-#      nsecs:  45178890
-#    frame_id: ''
-#  level: 8
-#  name: "/speaking_numbers_node2"
-#  msg: "test_errorcount:205"
-#  file: "dummyDrive.py"
-#  function: "speaking"
-#  line: 41
-#  topics: [/speaking_numbers_node2/speaking_numbers, /rosout]
+#  -
+#    level: 2
+#    name: "supervisor_node"
+#    message: "test_errorcount:34"
+#    hardware_id: "/speaking_numbers_node1"
+#    values:
+#      -
+#        key: "dummyDrive.py"
+#        value: "speaking"
+

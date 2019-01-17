@@ -10,6 +10,7 @@ from rospy.service import logger
 from drive_msgs.srv import GetLogger
 from diagnostic_msgs.msg import DiagnosticArray
 from diagnostic_msgs.msg import DiagnosticStatus
+from diagnostic_msgs.msg import KeyValue
 
 class SupervisorNode(object):
     def __init__(self):
@@ -44,27 +45,28 @@ class SupervisorNode(object):
         :return: Nothing
         :rtype: None
         """
+        thisnode = rospy.get_name()
+        if msg.name != thisnode:
 
         #mapping rosgraph.msg to DiganosticStatus.msg
-        level = bytes
-        name = 'supervisor_node'
-        message = msg.msg
-        hardware_id = msg.name
-        values = [msg.file, msg.function]
+            level = bytes
+            name = 'supervisor_node'
+            message = msg.msg
+            hardware_id = msg.name
+            values = [KeyValue(msg.file, msg.function)]
 
-        if msg.level <= 3:
-            level = 0
-        elif msg.level == 4:
-            level = 1
-        elif msg.level == 8:
-            level = 2
-        elif msg.level == 16:
-            level = 3
+            if msg.level <= 3:
+                level = 0
+            elif msg.level == 4:
+                level = 1
+            elif msg.level == 8:
+                level = 2
+            elif msg.level == 16:
+                level = 3
 
-        status = DiagnosticStatus(level, name, message, hardware_id, values)
-        print(type(status))
+            statusArray = [DiagnosticStatus(level, name, message, hardware_id, values)]
 
-        self.pub.publish(DiagnosticArray(msg.header, status))
+            self.pub.publish(DiagnosticArray(msg.header, statusArray))
 
         #TODO die abfrage ist das problem-
        # if not self.loglist:
