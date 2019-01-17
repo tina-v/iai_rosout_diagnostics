@@ -19,7 +19,7 @@ class SupervisorNode(object):
         publishes in diagnostic topic as diagnostic_msgs/DiagnosticArray
         when it receives a msg from rosout.
         """
-        self.sub = rospy.Subscriber("rosout_agg", Log, self.update_logger_list)
+        self.sub = rospy.Subscriber("rosout_agg", Log, self.update)
         self.srv = rospy.Service("~set_logger_level_of", GetLogger, self.set_logger_level_of_other_node)
         self.pub = rospy.Publisher("~diagnostic", DiagnosticArray,  queue_size=10)
         self.loglist = []
@@ -35,7 +35,7 @@ class SupervisorNode(object):
         logging.getLogger(srv.name).setLevel(srv.logger_level)
 
 
-    def update_logger_list(self, msg):
+    def update(self, msg):
         """
         Callback to ROS topic that processes new message.
         and saves the origin node of the msg and the logger_level in loglist.
@@ -61,13 +61,10 @@ class SupervisorNode(object):
         elif msg.level == 16:
             level = 3
 
-        print(type(msg.level), type(level))
-        msginfo = [level, name, message, hardware_id, values]
+        status = DiagnosticStatus(level, name, message, hardware_id, values)
+        print(type(status))
 
-        #print(DiagnosticStatus(level, name, message, hardware_id, values))
-        # self.pub.publish(DiagnosticStatus(level, name, message, hardware_id, values))
-
-        self.pub.publish(DiagnosticArray(msg.header, msginfo))
+        self.pub.publish(DiagnosticArray(msg.header, status))
 
         #TODO die abfrage ist das problem-
        # if not self.loglist:
