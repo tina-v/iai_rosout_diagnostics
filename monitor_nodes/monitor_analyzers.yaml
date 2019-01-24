@@ -3,12 +3,12 @@ base_path: '' # Optional, prepended to all diagnostic output
 analyzers:
   nodename:
     type: GenericAnalyzer
-    path: ' '
-    startswith: 'name'
+    path: supervisor
+    contains: ['name']
   level:
     type: GenericAnalyzer
     path: level
-    startswith: 'level'
+    startswith: ['level']
 
 #    analyzers:
 #      nodename:
