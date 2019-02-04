@@ -9,6 +9,12 @@ from diagnostic_msgs.msg import DiagnosticArray
 from diagnostic_msgs.msg import DiagnosticStatus
 from diagnostic_msgs.msg import KeyValue
 
+import diagnostic_updater
+
+# include <diagnostic_updater/diagnostic_updater.h>
+# include <std_msgs/Bool.h>
+# include <diagnostic_updater/publisher.h>
+
 
 class SupervisorNode(object):
 
@@ -22,7 +28,7 @@ class SupervisorNode(object):
 
         self.sub = rospy.Subscriber("rosout_agg", Log, self.update)
         self.srv = rospy.Service("~set_logger_level_of", GetLogger, self.set_pseudo_logger_level_of_other_node)
-        self.pub = rospy.Publisher("~diagnostic", DiagnosticArray,  queue_size=10)
+        self.pub = rospy.Publisher("~diagnostics", DiagnosticArray,  queue_size=10)
         self.log_buffer = []
         self.list_of_allowed_node_logger_level = []
         self.logger = logging.getLogger("rosout")
@@ -84,7 +90,7 @@ class SupervisorNode(object):
 
             # mapping rosgraph.msg to DiganosticStatus.msg
             level = bytes
-            name = 'supervisor_node'
+            name = 'supervisor_node:' + msg.name
             message = msg.msg
             hardware_id = msg.name
             values = [KeyValue(msg.file, msg.function)]
@@ -108,9 +114,12 @@ class SupervisorNode(object):
             if self.allowed_msg(hardware_id, level):
                 self.update_buffer(new_msg)
                 self.pub.publish(new_msg)
+                # updater.update() - getting bugfixes
+                updater.publish(status_array)
 
 
 if __name__ == '__main__':
     rospy.init_node('supervisor_node', anonymous=True)
+    updater = diagnostic_updater.Updater()
     SupervisorNode()
     rospy.spin()

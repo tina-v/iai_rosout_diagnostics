@@ -4,16 +4,15 @@ analyzers:
   supervisor_node:
     type: GenericAnalyzer
     path: supervisor
-    contains: ['name']
+    name: ['supervisor_node']
   level:
     type: GenericAnalyzer
     path: level
-    startswith: ['level']
-
-#    analyzers:
-#      nodename:
-#        type: GenericAnalyzer
-#        path: name
+    contains: ['2']
+  expected_node:
+    type: GenericAnalyzer
+    path: level
+    expected: ['supervisor_node']
 
 #header:
 #  seq: 360
