@@ -5,6 +5,11 @@ find_package(catkin REQUIRED COMPONENTS
     message_generation
     drive_msgs
     std_msgs
+    dynamic_reconfigure
+    )
+
+generate_dynamic_reconfigure_options( 
+    cfg/SupervisorDynamicReconfig.cfg
     )
 
 generate_messages(DEPENDENCIES
@@ -21,6 +26,12 @@ catkin_package(CATKIN_DEPENDS
 catkin_install_python(PROGRAMS
   script/dummyDrive.py
   script/getStatistics.py
+  script/dynamic_reconfigure_client.py
+  script/supervisor.py
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/script
 )
+
+#add_dependencies(
+#     supervisor_node ${PROJECT_NAME}_gencfg
+#    )
 

@@ -23,5 +23,8 @@
 <node name="supervisor_node1" pkg="monitor_nodes" type="supervisor.py" output="screen">
 </node>
 
+<node name="client_dynamic_reconfig" pkg="monitor_nodes" type="dynamic_reconfigure_client.py" output="screen">
+</node>
+
 </launch>
 
