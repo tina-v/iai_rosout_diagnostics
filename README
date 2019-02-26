@@ -1,0 +1,71 @@
+# monitor node -Supervisor
+
+experimenting and testing own written monitor which surveils robot drives:
+- republishes rosout_agg (rosgraph/Log msgs) on diagnostic topic (as diagnostic/DiagnosticArray msg)
+- has a buffer of 3-5 secs
+- offers a service to change the perceived loggerlevel of specific nodes
+
+## Getting Started
+
+git pull from: https://github.com/tina-v/my_ros_monitor
+
+### Prerequisites
+
+mandatory: Diagnostic (http://wiki.ros.org/diagnostics)
+optional: rqt_robot_monitor (http://wiki.ros.org/diagnostics/Tutorials/Using%20the%20Robot%20Monitor)
+
+
+### Installing
+
+A step by step series of examples that tell you how to get a development env running
+
+Say what the step will be
+
+```
+Give the example
+```
+
+And repeat
+
+```
+until finished
+```
+
+End with an example of getting some data out of the system or using it for a little demo
+
+## Running the tests
+
+Explain how to run the automated tests for this system
+
+### Break down into end to end tests
+
+Explain what these tests test and why
+
+```
+Give an example
+```
+
+## Deployment
+
+launch file - launch node
+call service:" set_logger_level_of (noden name, new logger level)
+nodename - string rosnode name (Ex. as displayed in 'rosnode list')
+logger level - byte diagnostic levels scale (0,1,2,3)
+
+Add additional notes about how to deploy this on a live system
+
+## Author
+
+Tina Van (https://github.com/tina-v)
+
+## License
+
+[temporary emtpy]
+
+## Acknowledgments
+
+README-Template by * **Billie Thompson** [PurpleBooth](https://github.com/PurpleBooth)
+
+* Hat tip to anyone whose code was used
+* Inspiration
+* etc

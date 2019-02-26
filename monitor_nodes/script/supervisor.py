@@ -2,18 +2,13 @@
 
 import rospy
 import logging
+import diagnostic_updater
 
 from rosgraph_msgs.msg import Log
 from drive_msgs.srv import GetLogger
 from diagnostic_msgs.msg import DiagnosticArray
 from diagnostic_msgs.msg import DiagnosticStatus
 from diagnostic_msgs.msg import KeyValue
-
-from dynamic_reconfigure.server import Server
-from dynamic_reconfigure.encoding import Config
-from monitor_nodes.cfg import SupervisorDynamicReconfigConfig
-
-import diagnostic_updater
 
 
 class SupervisorNode(object):
@@ -30,8 +25,6 @@ class SupervisorNode(object):
         self.srv = rospy.Service("~set_logger_level_of", GetLogger, self.set_pseudo_logger_level_of_other_node)
         self.pub = rospy.Publisher("~diagnostics", DiagnosticArray,  queue_size=10)
         self.updater = diagnostic_updater.Updater()
-        self.config_encoder = Config()
-        self.dynamic_srv = Server(SupervisorDynamicReconfigConfig, self.callback)
         self.log_buffer = []
         self.list_of_allowed_node_logger_level = []
         self.logger = logging.getLogger("rosout")
@@ -114,26 +107,6 @@ class SupervisorNode(object):
                 self.pub.publish(new_msg)
                 # updater.update() -is getting bugfixes from diagnosticstatus
                 self.updater.publish(status_array)
-            self.updateConfig(name, level)
-
-    def updateConfig(self, node_name, level):
-        # update_group = {"node_and_level": {"node": name}}
-        # self.dynamic_srv.update_configuration(update_group)
-        # as test- only node1!!!!!
-        if node_name == "/speaking_numbers_node1" or self.config_encoder.get("Node") == "":
-            if self.config_encoder.get("Level") > level:
-                self.dynamic_srv.update_configuration({"Node": node_name, "Level": level})
-                print(self.dynamic_srv.description)
-
-    def callback(self, config, level):
-        print(config.items())
-        #not nice ...perhaps only items - instead of rewriting the whole config
-        self.config_encoder = config
-        if (config.get("Node") != ""):
-            node_name = config.get("Node")
-            new_level = config.get("Level")
-            self.set_pseudo_logger_level_of_other_node(node_name, new_level)
-        return config
 
 
 if __name__ == '__main__':
