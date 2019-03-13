@@ -76,6 +76,25 @@ class SupervisorNode(object):
                 if msg.header.stamp <= last_msg_in_buffer.header.stamp:
                     self.log_buffer.remove(msg)
 
+    def to_diagnostics_msg(self, msg):
+        """
+
+        :param msg:
+        :return:
+        :rtype: DiagnosticArray
+        """
+        level = self.level_mapping[msg.level]
+        name = msg.name
+        message = msg.msg
+        hardware_id = msg.name
+        values = [KeyValue('file', msg.file),
+                  KeyValue('function', msg.function),
+                  KeyValue('line', '{}'.format(msg.line))]
+
+        status_array = [DiagnosticStatus(level, name, message, hardware_id, values)]
+        msg.header.frame_id = rospy.get_name()
+        return DiagnosticArray(msg.header, status_array)
+
     def update(self, msg):
         """
         Callback to ROS topic that processes new message.
@@ -85,27 +104,11 @@ class SupervisorNode(object):
         :return: Nothing
         :rtype: None
         """
-        this_node = rospy.get_name()
-        if msg.name != this_node:
-
-            # mapping rosgraph.msg to DiganosticStatus.msg
-            level = self.level_mapping[msg.level]
-            name = msg.name
-            message = msg.msg
-            hardware_id = msg.name
-            values = [KeyValue('file', msg.file),
-                      KeyValue('function', msg.function),
-                      KeyValue('line', '{}'.format(msg.line))]
-
-            status_array = [DiagnosticStatus(level, name, message, hardware_id, values)]
-            msg.header.frame_id = rospy.get_name()
-            new_msg = DiagnosticArray(msg.header, status_array)
-
-            if self.allowed_msg(hardware_id, level):
-                self.update_buffer(new_msg)
-                self.pub.publish(new_msg)
-                # updater.update() -is getting bugfixes from diagnosticstatus
-                self.updater.publish(status_array)
+        if msg.name != rospy.get_name():
+            new_msg = self.to_diagnostics_msg(msg)
+            self.update_buffer(new_msg)
+            self.pub.publish(new_msg)
+            self.updater.publish(new_msg.status)
 
 
 if __name__ == '__main__':
