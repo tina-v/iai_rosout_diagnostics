@@ -30,13 +30,13 @@ Give an example
 
 ## Deployment
 
-start supervisor node from launchfile, for example:
+start iai_rosout_diagnostics node from launchfile, for example:
 ```
-<node name="supervisor_node1" pkg="supervisor_node" type="supervisor.py" output="screen">
+<node name="iai_rosout_diagnostics_node1" pkg="iai_rosout_diagnostics_node" type="iai_rosout_diagnostics.py" output="screen">
 </node>
 
 ```
-By starting the node it will generate msgs on the topics: '/diagnostics' and '/supervisorNodeName/diagnostics' when a msg is published in rosout.
+By starting the node it will generate msgs on the topics: '/diagnostics' and '/iai_rosout_diagnosticsNodeName/diagnostics' when a msg is published in rosout.
 While node is running call the service:" set_logger_level_of (nodename, new logger level) to change the logger level of nodename (where 
 nodename is a rosnode name (Ex. as displayed in 'rosnode list') with type string and logger level is a diagnostic level (scale 0 - 3) of type byte). 
 

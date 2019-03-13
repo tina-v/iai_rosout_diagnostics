@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package>
-  <name>supervisor_node</name>
+  <name>iai_rosout_diagnostics</name>
   <version>0.0.1</version>
   <description>
     supervisior node generation 

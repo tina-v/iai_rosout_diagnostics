@@ -1,0 +1,18 @@
+<launch>
+
+<node pkg="diagnostic_aggregator" type="aggregator_node" name="diagnostic_aggregator" >
+<rosparam command="load" file="$(find iai_rosout_diagnostics)/monitor_analyzers.yaml" />
+</node>
+
+<node name="test_node1" pkg="iai_rosout_diagnostics" type="testNode.py" output="screen" >
+</node>
+
+<node name="test_node2" pkg="iai_rosout_diagnostics" type="testNode.py" output="screen" >
+ <param name="onlyInfo" type="bool" value="True" />
+</node>
+
+<node name="iai_rosout_diagnostics1" pkg="iai_rosout_diagnostics" type="rosout_diagnostics.py" output="screen">
+</node>
+
+</launch>
+

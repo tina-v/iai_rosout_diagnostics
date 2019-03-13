@@ -5,7 +5,7 @@ import logging
 import diagnostic_updater
 
 from rosgraph_msgs.msg import Log
-from drive_msgs.srv import GetLogger
+# from drive_msgs.srv import GetLogger
 from diagnostic_msgs.msg import DiagnosticArray
 from diagnostic_msgs.msg import DiagnosticStatus
 from diagnostic_msgs.msg import KeyValue
@@ -22,7 +22,7 @@ class SupervisorNode(object):
         """
 
         self.sub = rospy.Subscriber("rosout_agg", Log, self.update)
-        self.srv = rospy.Service("~set_logger_level_of", GetLogger, self.set_pseudo_logger_level_of_other_node)
+        # self.srv = rospy.Service("~set_logger_level_of", GetLogger, self.set_pseudo_logger_level_of_other_node)
         self.pub = rospy.Publisher("~diagnostics", DiagnosticArray,  queue_size=10)
         self.updater = diagnostic_updater.Updater()
         self.log_buffer = []
@@ -79,7 +79,7 @@ class SupervisorNode(object):
         :return: Nothing
         :rtype: None
         """
-        this_node = rospy.nameget_name()
+        this_node = rospy.get_name()
         if msg.name != this_node:
 
             # mapping rosgraph.msg to DiganosticStatus.msg
@@ -87,7 +87,9 @@ class SupervisorNode(object):
             name = msg.name
             message = msg.msg
             hardware_id = msg.name
-            values = [KeyValue(msg.file, msg.function)]
+            values = [KeyValue('file', msg.file),
+                      KeyValue('function', msg.function),
+                      KeyValue('line', '{}'.format(msg.line))]
 
             if msg.level <= 3:
                 level = 0
@@ -99,7 +101,7 @@ class SupervisorNode(object):
                 level = 3
 
             status_array = [DiagnosticStatus(level, name, message, hardware_id, values)]
-            msg.header.frame_id = "supervisor"
+            msg.header.frame_id = "rosout_diagnostics"
             new_msg = DiagnosticArray(msg.header, status_array)
 
             if self.allowed_msg(hardware_id, level):
@@ -110,6 +112,6 @@ class SupervisorNode(object):
 
 
 if __name__ == '__main__':
-    rospy.init_node('supervisor_node', anonymous=True)
+    rospy.init_node('rosout_diagnostics', anonymous=True)
     SupervisorNode()
     rospy.spin()

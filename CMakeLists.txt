@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(supervisor_node)
+project(iai_rosout_diagnostics)
 
 find_package(catkin REQUIRED COMPONENTS
     message_generation
@@ -12,7 +12,7 @@ catkin_package(CATKIN_DEPENDS
     )
 
 catkin_install_python(PROGRAMS
-  script/supervisor.py
+  script/rosout_diagnostics.py
   script/testNode.py
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/script
 )
