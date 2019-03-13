@@ -4,13 +4,13 @@
     <rosparam command="load" file="$(find iai_rosout_diagnostics)/data/monitor_analyzers.yaml" />
   </node>
 
-  <node name="test_node1" pkg="iai_rosout_diagnostics" type="testNode.py" output="screen" />
+  <node name="test_node1" pkg="iai_rosout_diagnostics" type="test_node" output="screen" />
 
-  <node name="test_node2" pkg="iai_rosout_diagnostics" type="testNode.py" output="screen" >
+  <node name="test_node2" pkg="iai_rosout_diagnostics" type="test_node" output="screen" >
     <param name="onlyInfo" type="bool" value="True" />
   </node>
 
-  <node name="iai_rosout_diagnostics1" pkg="iai_rosout_diagnostics" type="rosout_diagnostics.py" output="screen" />
+  <node name="iai_rosout_diagnostics1" pkg="iai_rosout_diagnostics" type="rosout_diagnostics" output="screen" />
 
   <node name="rqt_robot_monitor" type="rqt_robot_monitor" pkg="rqt_robot_monitor" />
 
