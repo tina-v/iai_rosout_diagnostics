@@ -28,6 +28,12 @@ class SupervisorNode(object):
         self.log_buffer = []
         self.list_of_allowed_node_logger_level = []
         self.logger = logging.getLogger("rosout")
+        self.level_mapping = {
+            Log.INFO: DiagnosticStatus.OK,
+            Log.DEBUG: DiagnosticStatus.OK,
+            Log.WARN: DiagnosticStatus.WARN,
+            Log.ERROR: DiagnosticStatus.ERROR,
+            Log.FATAL: DiagnosticStatus.ERROR}
 
     def set_pseudo_logger_level_of_other_node(self, node_name, new_level):
         """
@@ -83,7 +89,7 @@ class SupervisorNode(object):
         if msg.name != this_node:
 
             # mapping rosgraph.msg to DiganosticStatus.msg
-            level = bytes
+            level = self.level_mapping[msg.level]
             name = msg.name
             message = msg.msg
             hardware_id = msg.name
@@ -91,17 +97,8 @@ class SupervisorNode(object):
                       KeyValue('function', msg.function),
                       KeyValue('line', '{}'.format(msg.line))]
 
-            if msg.level <= 3:
-                level = 0
-            elif msg.level == 4:
-                level = 1
-            elif msg.level == 8:
-                level = 2
-            elif msg.level == 16:
-                level = 3
-
             status_array = [DiagnosticStatus(level, name, message, hardware_id, values)]
-            msg.header.frame_id = "rosout_diagnostics"
+            msg.header.frame_id = rospy.get_name()
             new_msg = DiagnosticArray(msg.header, status_array)
 
             if self.allowed_msg(hardware_id, level):
