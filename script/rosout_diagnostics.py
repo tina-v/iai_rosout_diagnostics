@@ -1,11 +1,8 @@
 #!/usr/bin/env python
 
 import rospy
-import logging
-import diagnostic_updater
 
 from rosgraph_msgs.msg import Log
-# from drive_msgs.srv import GetLogger
 from diagnostic_msgs.msg import DiagnosticArray
 from diagnostic_msgs.msg import DiagnosticStatus
 from diagnostic_msgs.msg import KeyValue
@@ -22,59 +19,13 @@ class SupervisorNode(object):
         """
 
         self.sub = rospy.Subscriber("rosout_agg", Log, self.update)
-        # self.srv = rospy.Service("~set_logger_level_of", GetLogger, self.set_pseudo_logger_level_of_other_node)
-        self.pub = rospy.Publisher("~diagnostics", DiagnosticArray,  queue_size=10)
-        self.updater = diagnostic_updater.Updater()
-        self.log_buffer = []
-        self.list_of_allowed_node_logger_level = []
-        self.logger = logging.getLogger("rosout")
+        self.pub = rospy.Publisher("diagnostics", DiagnosticArray,  queue_size=10)
         self.level_mapping = {
             Log.INFO: DiagnosticStatus.OK,
             Log.DEBUG: DiagnosticStatus.OK,
             Log.WARN: DiagnosticStatus.WARN,
             Log.ERROR: DiagnosticStatus.ERROR,
             Log.FATAL: DiagnosticStatus.ERROR}
-
-    def set_pseudo_logger_level_of_other_node(self, node_name, new_level):
-        """
-        Setting restrictions by a level for a Node for entering the buffer and allowed to be published by supervisornode
-        :param node_name: node of which level should be modified
-        :param new_level: level in numeric
-        :return: None
-        """
-        new_restriction = [node_name, new_level]
-        for x in self.list_of_allowed_node_logger_level:
-            if node_name == x[0] and new_level >= x[1]:
-                self.list_of_allowed_node_logger_level.remove(x)
-        self.list_of_allowed_node_logger_level.append(new_restriction)
-        print(self.list_of_allowed_node_logger_level)
-
-    def allowed_msg(self, nodename, level):
-        """
-        compares incomming_msg node with list of restrictions
-        :return: boolean if the msg is allowed in the buffer
-        """
-
-        for x in self.list_of_allowed_node_logger_level:
-            if nodename == x[0] and level < x[1]:
-                return False
-        return True
-
-    def update_buffer(self, diagnostic_msg):
-        """
-        adding new msg to buffer.msg which stays in buffer for 3 to 5 secs before it gets removed.
-        :param diagnostic_msg: new msg to be added to the buffer of the supervisor_node (msg of type DiagnosticArray)
-        :return: void
-        """
-        self.log_buffer.append(diagnostic_msg)
-        last_msg_in_buffer = self.log_buffer[0]
-        if self.log_buffer[0]:
-            time_of_last_msg_in_buffer = diagnostic_msg.header.stamp.secs - last_msg_in_buffer.header.stamp.secs
-        # for now it's 3-5 secs buffer
-        if time_of_last_msg_in_buffer > 3:
-            for msg in self.log_buffer:
-                if msg.header.stamp <= last_msg_in_buffer.header.stamp:
-                    self.log_buffer.remove(msg)
 
     def to_diagnostics_msg(self, msg):
         """
@@ -105,10 +56,7 @@ class SupervisorNode(object):
         :rtype: None
         """
         if msg.name != rospy.get_name():
-            new_msg = self.to_diagnostics_msg(msg)
-            self.update_buffer(new_msg)
-            self.pub.publish(new_msg)
-            self.updater.publish(new_msg.status)
+            self.pub.publish(self.to_diagnostics_msg(msg))
 
 
 if __name__ == '__main__':
