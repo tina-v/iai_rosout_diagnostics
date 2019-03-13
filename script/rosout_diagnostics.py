@@ -8,14 +8,11 @@ from diagnostic_msgs.msg import DiagnosticStatus
 from diagnostic_msgs.msg import KeyValue
 
 
-class SupervisorNode(object):
+class RosoutDiagnostics(object):
 
     def __init__(self):
         """
-        initialisation of an object from SupervisorNode.
-        subscribed to rosout (rosout_agg)
-        publishes in diagnostic topic as diagnostic_msgs/DiagnosticArray
-        when it receives a msg from rosout.
+        Initialisation of a RosoutDiagnostics object.
         """
 
         self.sub = rospy.Subscriber("rosout_agg", Log, self.update)
@@ -29,9 +26,10 @@ class SupervisorNode(object):
 
     def to_diagnostics_msg(self, msg):
         """
-
-        :param msg:
-        :return:
+        Converts a rosout message into a diagnostics message.
+        :param msg: rosout message to convert.
+        :type msg: Log
+        :return: New diagnostics message.
         :rtype: DiagnosticArray
         """
         level = self.level_mapping[msg.level]
@@ -48,12 +46,10 @@ class SupervisorNode(object):
 
     def update(self, msg):
         """
-        Callback to ROS topic that processes new message.
-        and saves the origin node of the msg and the logger_level in loglist.
-        :param msg: The newest ROS message to process.
+        Callback to process incoming rosout message. Will relate a corresponding message to diagnostics.
+        :param msg: The rosout message to process.
         :type msg: rosout
-        :return: Nothing
-        :rtype: None
+        :return: None
         """
         if msg.name != rospy.get_name():
             self.pub.publish(self.to_diagnostics_msg(msg))
@@ -61,5 +57,5 @@ class SupervisorNode(object):
 
 if __name__ == '__main__':
     rospy.init_node('rosout_diagnostics', anonymous=True)
-    SupervisorNode()
+    RosoutDiagnostics()
     rospy.spin()
