@@ -1,0 +1,32 @@
+pub_rate: 1.0 # Optional
+base_path: '' # Optional, prepended to all diagnostic output
+analyzers:
+  supervisor_node:
+    type: GenericAnalyzer
+    path: supervisor
+    name: ['supervisor_node1']
+  level:
+    type: GenericAnalyzer
+    path: level
+    contains: ['node2']
+  node_name:
+    type: GenericAnalyzer
+    path: name
+    contains: ['node']
+
+#header:
+#  seq: 360
+#  stamp:
+#    secs: 1547717791
+#    nsecs: 739353895
+#  frame_id: ''
+#status:
+#  -
+#    level: 2
+#    name: "supervisor_node"
+#    message: "test_errorcount:34"
+#    hardware_id: "/speaking_numbers_node1"
+#    values:
+#      -
+#        key: "dummyDrive.py"
+#        value: "speaking"

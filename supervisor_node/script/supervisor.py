@@ -79,7 +79,7 @@ class SupervisorNode(object):
         :return: Nothing
         :rtype: None
         """
-        this_node = rospy.get_name()
+        this_node = rospy.nameget_name()
         if msg.name != this_node:
 
             # mapping rosgraph.msg to DiganosticStatus.msg

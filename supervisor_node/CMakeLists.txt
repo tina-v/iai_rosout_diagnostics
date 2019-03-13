@@ -13,5 +13,6 @@ catkin_package(CATKIN_DEPENDS
 
 catkin_install_python(PROGRAMS
   script/supervisor.py
+  script/testNode.py
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/script
 )
