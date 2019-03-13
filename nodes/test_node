@@ -10,12 +10,9 @@ class TestNode(object):
         """
         publishes log msg through speaking_numberNode topic.
         """
-        topic = '~TestNode'
         self.num = 0
         self.name_str = None
-        self.rate = None
         self.rate = rospy.get_param('~speech_rate', 1)
-        self.onlyInfo = None
         self.onlyInfo = rospy.get_param('~onlyInfo', False)
 
     def speaking(self):
@@ -25,18 +22,22 @@ class TestNode(object):
         rate = rospy.Rate(self.rate) # speaking rate
         while not rospy.is_shutdown():
             self.num += 1
-            self.name_str = "count:" + str(self.num)
-            rospy.logdebug(self.num)
-            rospy.logdebug(self.name_str)
+
+            rospy.logdebug(self.get_speech())
 
             if self.onlyInfo:
-                rospy.loginfo("test_info" + self.name_str)
+                rospy.loginfo(self.get_speech())
             else:
-                rospy.loginfo("test_info" + self.name_str)
-                rospy.logwarn("test_warning" + self.name_str)
-                rospy.logfatal("test_fatal" + self.name_str)
-                rospy.logerr("test_error" + self.name_str)
+                if (self.num %10) < 5:
+                    rospy.loginfo(self.get_speech())
+                elif (self.num % 5) < 4:
+                    rospy.logwarn(self.get_speech())
+                else:
+                    rospy.logerr(self.get_speech())
             rate.sleep()
+
+    def get_speech(self):
+        return "count: {}".format(self.num)
 
 
 if __name__ == "__main__":

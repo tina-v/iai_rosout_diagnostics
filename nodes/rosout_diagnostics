@@ -33,7 +33,7 @@ class RosoutDiagnostics(object):
         :rtype: DiagnosticArray
         """
         level = self.level_mapping[msg.level]
-        name = msg.name
+        name = 'rosout_diagnostics: {}'.format(msg.name)
         message = msg.msg
         hardware_id = msg.name
         values = [KeyValue('file', msg.file),
