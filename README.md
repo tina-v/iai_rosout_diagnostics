@@ -34,11 +34,11 @@ This will bring up two several ROS nodes:
 ```
 $ rosnode list 
 /diagnostic_aggregator
-/iai_rosout_diagnostics
+/rosout_diagnostics
 /node_with_issues
 /node_without_fault
 /rosout
 /rqt_robot_monitor
 ```
-```/node_with_issues``` and ```/node_without_fault``` produces prints using rosout. ```/iai_rosout_diagnostics``` collects their messages and sends to them to the ```/diagnostics``` topic. The ```/diagnostics_aggregator``` filters them and produces an aggregate view that you can visualize with ```/rqt_robot_monitor```. This could look like this:
+```/node_with_issues``` and ```/node_without_fault``` produces prints using rosout. ```/rosout_diagnostics``` collects their messages and sends to them to the ```/diagnostics``` topic. The ```/diagnostics_aggregator``` filters them and produces an aggregate view that you can visualize with ```/rqt_robot_monitor```. This could look like this:
 ![rqt robot monitor](https://raw.githubusercontent.com/airballking/my_ros_monitor/master/data/screenshot_rqt_robot_monitor.png)
