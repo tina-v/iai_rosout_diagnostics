@@ -65,7 +65,7 @@ class RosoutDiagnostics(object):
 
     def is_blacklisted_name(self, name):
         for blacklist_name in self.blacklist:
-            if name in blacklist_name:
+            if blacklist_name in name:
                 return True
         return False
 
