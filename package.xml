@@ -3,13 +3,13 @@
   <name>iai_rosout_diagnostics</name>
   <version>0.0.1</version>
   <description>
-    supervisior node generation 
+    A ROS utility to relay rosout message to diagnostics.
   </description>
-  <maintainer email="van@uni-bremen.de">Tina Van</maintainer>
+  <maintainer email="georg.bartels@cs.uni-bremen.de">Georg Bartels</maintainer>
   <author email="van@uni-bremen.de">Tina Van</author>
   <author email="georg.bartels@cs.uni-bremen.de">Georg Bartels</author>
 
-  <license>none</license>
+  <license>LGPLv3</license>
 
   <buildtool_depend version_gte="0.5.68">catkin</buildtool_depend>
 
