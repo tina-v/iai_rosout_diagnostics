@@ -4,7 +4,10 @@
     <rosparam command="load" file="$(find iai_rosout_diagnostics)/config/generic_analyzers.yaml" />
   </node>
 
-  <node pkg="iai_rosout_diagnostics" type="rosout_diagnostics" name="rosout_diagnostics" output="screen" />
+  <node pkg="iai_rosout_diagnostics" type="rosout_diagnostics" name="rosout_diagnostics"
+        output="screen" >
+    <rosparam command="load" file="$(find iai_rosout_diagnostics)/config/generic_blacklist.yaml" />
+  </node>
 
   <node pkg="rqt_robot_monitor" type="rqt_robot_monitor" name="rqt_robot_monitor" />
 

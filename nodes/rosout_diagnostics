@@ -34,6 +34,8 @@ class RosoutDiagnostics(object):
 
         self.sub = rospy.Subscriber("rosout_agg", Log, self.update)
         self.pub = rospy.Publisher("diagnostics", DiagnosticArray,  queue_size=10)
+        self.blacklist = rospy.get_param("~blacklist", [])
+        self.blacklist.append(rospy.get_name())
         self.level_mapping = {
             Log.INFO: DiagnosticStatus.OK,
             Log.DEBUG: DiagnosticStatus.OK,
@@ -61,6 +63,12 @@ class RosoutDiagnostics(object):
         msg.header.frame_id = rospy.get_name()
         return DiagnosticArray(msg.header, status_array)
 
+    def is_blacklisted_name(self, name):
+        for blacklist_name in self.blacklist:
+            if name in blacklist_name:
+                return True
+        return False
+
     def update(self, msg):
         """
         Callback to process incoming rosout message. Will relate a corresponding message to diagnostics.
@@ -68,7 +76,7 @@ class RosoutDiagnostics(object):
         :type msg: rosout
         :return: None
         """
-        if msg.name != rospy.get_name():
+        if not self.is_blacklisted_name(msg.name):
             self.pub.publish(self.to_diagnostics_msg(msg))
 
 
