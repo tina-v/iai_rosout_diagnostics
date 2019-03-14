@@ -5,3 +5,4 @@ analyzers:
     type: GenericAnalyzer
     path: Rosout Diagnostics
     find_and_remove_prefix: rosout_diagnostics
+    timeout: -1
