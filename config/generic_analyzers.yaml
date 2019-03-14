@@ -5,5 +5,3 @@ analyzers:
     type: GenericAnalyzer
     path: Rosout Diagnostics
     find_and_remove_prefix: rosout_diagnostics
-    num_items: 2
-

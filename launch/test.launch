@@ -1,18 +1,12 @@
 <launch>
 
-  <node pkg="diagnostic_aggregator" type="aggregator_node" name="diagnostic_aggregator" >
-    <rosparam command="load" file="$(find iai_rosout_diagnostics)/data/test_analyzers.yaml" />
-  </node>
-
   <node name="node_with_issues" pkg="iai_rosout_diagnostics" type="test_node" output="screen" />
 
   <node name="node_without_fault" pkg="iai_rosout_diagnostics" type="test_node" output="screen" >
     <param name="onlyInfo" type="bool" value="True" />
   </node>
 
-  <node name="iai_rosout_diagnostics1" pkg="iai_rosout_diagnostics" type="rosout_diagnostics" output="screen" />
-
-  <node name="rqt_robot_monitor" type="rqt_robot_monitor" pkg="rqt_robot_monitor" />
+  <include file="$(find iai_rosout_diagnostics)/launch/rosout_diagnostics.launch" />
 
 </launch>
 
