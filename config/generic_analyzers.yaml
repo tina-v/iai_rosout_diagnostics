@@ -1,0 +1,8 @@
+pub_rate: 1.0 # Optional
+base_path: '' # Optional, prepended to all diagnostic output
+analyzers:
+  rosout_diagnostics:
+    type: GenericAnalyzer
+    path: Rosout Diagnostics
+    find_and_remove_prefix: rosout_diagnostics
+    timeout: -1

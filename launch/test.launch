@@ -1,0 +1,12 @@
+<launch>
+
+  <node name="node_with_issues" pkg="iai_rosout_diagnostics" type="test_node" output="screen" />
+
+  <node name="node_without_fault" pkg="iai_rosout_diagnostics" type="test_node" output="screen" >
+    <param name="onlyInfo" type="bool" value="True" />
+  </node>
+
+  <include file="$(find iai_rosout_diagnostics)/launch/rosout_diagnostics.launch" />
+
+</launch>
+

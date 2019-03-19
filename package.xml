@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>iai_rosout_diagnostics</name>
+  <version>0.0.1</version>
+  <description>
+    A ROS utility to relay rosout message to diagnostics.
+  </description>
+  <maintainer email="georg.bartels@cs.uni-bremen.de">Georg Bartels</maintainer>
+  <author email="van@uni-bremen.de">Tina Van</author>
+  <author email="georg.bartels@cs.uni-bremen.de">Georg Bartels</author>
+
+  <license>LGPLv3</license>
+
+  <buildtool_depend version_gte="0.5.68">catkin</buildtool_depend>
+
+  <depend>rospy</depend>
+  <depend>rosgraph_msgs</depend>
+  <depend>diagnostic_msgs</depend>
+  <exec_depend>rqt_robot_monitor</exec_depend>
+  <exec_depend>diagnostic_aggregator</exec_depend>
+
+</package>
